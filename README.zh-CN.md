@@ -1,4 +1,4 @@
-# QuantDesk
+﻿# QuantDesk
 
 <p align="center">
   <a href="README.md">English</a> · <strong>简体中文</strong>
@@ -256,7 +256,7 @@ pip install -r requirements.txt
 pytest tests/ -q
 ```
 
-每次 push / PR 都会跑 CI（见 `.github/workflows/ci.yml`）。
+本地用 `pytest` 跑测试即可。
 
 ---
 
