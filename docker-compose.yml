@@ -1,16 +1,16 @@
 services:
   quantdesk:
     build: .
+    image: quantdesk:local
     container_name: quantdesk
     restart: unless-stopped
-    cpus: 40.0
     stop_grace_period: 30s
     ports:
       - "18080:8000"
     env_file:
       - .env
     environment:
-      QUANT_CPU_WORKERS: "32"
+      QUANT_CPU_WORKERS: "4"
       OPENBLAS_NUM_THREADS: "1"
       OMP_NUM_THREADS: "1"
       MKL_NUM_THREADS: "1"
@@ -83,20 +83,18 @@ services:
       - quantdesk-net
 
   alpha-miner:
-    image: us-quant-quantdesk
+    image: quantdesk:local
     container_name: quantdesk-alpha-miner
     restart: "no"
     profiles:
       - mine
-    cpus: 32.0
-    mem_limit: 28g
     env_file:
       - .env
     environment:
       ALPHA_MINER_API: http://quantdesk:8000
       ALPHA_MINER_STORE: /app/data/store/alpha_miner
       PYTHONPATH: /app
-      ALPHA_MINER_WORKERS: "24"
+      ALPHA_MINER_WORKERS: "4"
       ALPHA_MINER_A_COUNT: "48"
       ALPHA_MINER_B_COUNT: "6"
       ALPHA_MINER_INTERVAL_SEC: "0"
@@ -126,10 +124,11 @@ services:
 
 
   news-trader:
-    image: us-quant-quantdesk
+    image: quantdesk:local
     container_name: quantdesk-news-trader
     restart: unless-stopped
-    cpus: 2.0
+    profiles:
+      - news
     env_file:
       - .env
     environment:
@@ -195,7 +194,7 @@ services:
       - quantdesk-net
 
   research-reviewer:
-    image: us-quant-quantdesk
+    image: quantdesk:local
     container_name: quantdesk-research-reviewer
     restart: "no"
     profiles:
@@ -248,11 +247,12 @@ services:
 
 
   intraday-runner:
-    image: us-quant-quantdesk
+    image: quantdesk:local
     container_name: quantdesk-intraday
     restart: unless-stopped
     stop_grace_period: 20s
-    cpus: 2.0
+    profiles:
+      - intraday
     env_file:
       - .env
     environment:

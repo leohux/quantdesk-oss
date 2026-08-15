@@ -1,4 +1,4 @@
-# QuantDesk
+﻿# QuantDesk
 
 <p align="center">
   <strong>English</strong> · <a href="README.zh-CN.md">简体中文</a>
@@ -156,31 +156,35 @@ Deep dive: [`docs/Architecture.md`](docs/Architecture.md) · [`docs/EventFlow.md
 git clone https://github.com/leohux/quantdesk-oss.git
 cd quantdesk-oss
 cp .env.example .env
-# REQUIRED: set ADMIN_PASSWORD=... (no insecure default)
+# default ADMIN_PASSWORD=changeme1 — change it before any network exposure
 # fill ALPACA_* if you want paper trading; leave live locks as-is
 ```
 
 ### What you get out of the box
 
-- **Backend:** FastAPI (pi/)
-- **Frontend:** React + Vite dashboard (web/) — built inside Docker and served by the API
-- **Not zero-config:** you must create .env and set ADMIN_PASSWORD (and Alpaca keys for paper trading)
+- **Backend:** FastAPI (`api/`)
+- **Frontend:** React + Vite dashboard (`web/`) — built inside Docker and served by the API
+- **Not zero-config:** copy `.env.example` → `.env` (default login password is `changeme1`; change it). Add Alpaca keys for paper trading.
 
 ### 2) Run with Docker (recommended)
 
 ```bash
 docker compose up -d --build
-# API: http://127.0.0.1:18080
-# Docs: http://127.0.0.1:18080/docs
+# UI + API: http://127.0.0.1:18080
+# OpenAPI:  http://127.0.0.1:18080/docs
+# Login password: value of ADMIN_PASSWORD in .env
 ```
 
-IB Gateway is behind a Compose **profile** and is **not** started by default:
+Default stack = `quantdesk` + Postgres + Redis. Optional sidecars use Compose profiles:
 
 ```bash
-# only when you actually have IBKR credentials + want paper gateway
-docker compose --profile ibkr up -d
+docker compose --profile news up -d          # news trader
+docker compose --profile mine up -d          # alpha miner
+docker compose --profile intraday up -d      # intraday runner
+docker compose --profile ibkr up -d          # IB Gateway (credentials required)
 ```
 
+IB Gateway is behind a Compose **profile** and is **not** started by default.
 ### 3) Or run locally
 
 ```bash

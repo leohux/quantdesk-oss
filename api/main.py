@@ -929,7 +929,7 @@ async def on_startup():
         logging.getLogger(__name__).warning("WS broadcaster start failed: %s", exc)
 
 
-if WEB_DIST.exists():
+if WEB_DIST.exists() and (WEB_DIST / "index.html").exists():
     assets = WEB_DIST / "assets"
     if assets.exists():
         app.mount("/assets", StaticFiles(directory=assets), name="assets")

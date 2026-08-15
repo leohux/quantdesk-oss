@@ -34,10 +34,10 @@ def verify_password(plain: str, hashed: str) -> bool:
 # ---------------------------------------------------------------------------
 _admin_pw = os.getenv("ADMIN_PASSWORD", "").strip()
 _viewer_pw = os.getenv("VIEWER_PASSWORD", "").strip()
-if not _admin_pw:
+if not _admin_pw or len(_admin_pw) < 8:
     raise RuntimeError(
-        "ADMIN_PASSWORD env var is required (no default). "
-        "Copy .env.example → .env and set a strong password."
+        "ADMIN_PASSWORD env var is required (min 8 characters, no default). "
+        "Copy .env.example → .env and set ADMIN_PASSWORD before starting."
     )
 
 ADMIN_USER: dict[str, Any] = {

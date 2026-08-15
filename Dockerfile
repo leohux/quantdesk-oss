@@ -29,7 +29,11 @@ COPY tests ./tests
 COPY scripts ./scripts
 COPY alpha_miner ./alpha_miner
 COPY research_reviewer ./research_reviewer
+COPY news_trader ./news_trader
 COPY --from=web-build /app/web/dist ./web/dist
+
+# Ensure runtime dirs exist even when volumes are empty on first boot
+RUN mkdir -p /app/data/store /app/data/cache /app/web/dist
 
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --retries=3 CMD curl -f http://localhost:8000/health || exit 1

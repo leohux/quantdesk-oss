@@ -39,6 +39,10 @@ data/system_metrics.jsonl
 !data/.gitkeep
 !data/__init__.py
 !data/loader.py
+!data/store/
+!data/store/.gitkeep
+!data/cache/
+!data/cache/.gitkeep
 backups/
 *.pkl
 *.parquet
