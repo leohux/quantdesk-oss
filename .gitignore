@@ -1,0 +1,69 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+dist/
+build/
+.venv/
+venv/
+.env
+.env.*
+!.env.example
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.tsbuildinfo
+
+# --- Node / frontend ---
+web/node_modules/
+web/dist/
+npm-debug.log*
+yarn-error.log*
+
+# --- Runtime / local state (never commit) ---
+data/store/
+data/cache/
+data/reviews/
+data/research/
+data/universes/
+data/ibkr/
+data/*.log
+data/*.jsonl
+data/*.json
+data/*.csv
+data/system_metrics.jsonl
+!data/.gitkeep
+!data/__init__.py
+!data/loader.py
+backups/
+*.pkl
+*.parquet
+*.duckdb
+.ipynb_checkpoints/
+.bak-*/
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db
+
+# --- Cloudflare / Pages local cache ---
+.wrangler/
+
+# --- Secrets & private ops ---
+*.pem
+*.key
+id_rsa*
+*.secret
+deploy/RUNBOOK.md
+deploy/grafana-dashboard.json
+deploy/_commit_sleeve.sh
+MASTER_PROMPT.md
+PHASE1_PLAN.md
+research/archive/

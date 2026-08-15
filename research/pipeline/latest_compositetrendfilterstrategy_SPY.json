@@ -1,0 +1,167 @@
+{
+  "strategy_id": "CompositeTrendFilterStrategy",
+  "symbol": "SPY",
+  "run_timestamp": "2026-07-11T16:44:56.876419",
+  "overall_status": "FAIL",
+  "passed": 8,
+  "total": 9,
+  "failed_gates": [
+    "Benchmark Comparison"
+  ],
+  "gates": [
+    {
+      "gate_id": 1,
+      "gate_name": "Sector Concentration",
+      "status": "PASS",
+      "details": {
+        "symbol": "SPY",
+        "note": "单标的策略，行业集中度由标的本身决定"
+      },
+      "message": "单标的策略 (SPY)，行业检查不适用"
+    },
+    {
+      "gate_id": 2,
+      "gate_name": "Universe Pollution",
+      "status": "PASS",
+      "details": {
+        "total_assets": 1,
+        "all_clean": true
+      },
+      "message": "Universe 干净，1 个标的全部通过"
+    },
+    {
+      "gate_id": 3,
+      "gate_name": "IS/OOS Gap",
+      "status": "PASS",
+      "details": {
+        "is_sharpe": 0.2966,
+        "oos_sharpe": 0.7173,
+        "gap": -0.4207,
+        "is_period": "2016-07-13 00:00:00 ~ 2023-07-07 00:00:00",
+        "oos_period": "2023-07-10 00:00:00 ~ 2026-07-10 00:00:00",
+        "is_bars": 1758,
+        "oos_bars": 754
+      },
+      "message": "IS/OOS Gap = -0.421，无过拟合迹象"
+    },
+    {
+      "gate_id": 4,
+      "gate_name": "Cost Sensitivity",
+      "status": "PASS",
+      "details": {
+        "sharpe_0bps": 0.3575,
+        "sharpe_5bps": 0.3045,
+        "sharpe_10bps": 0.2519,
+        "sharpe_20bps": 0.148,
+        "decay_0to10": 0.1056,
+        "decay_0to20": 0.2095
+      },
+      "message": "成本稳健，10bps 下 Sharpe = 0.252"
+    },
+    {
+      "gate_id": 5,
+      "gate_name": "Single Asset Contribution",
+      "status": "PASS",
+      "details": {
+        "symbol": "SPY",
+        "note": "单标的策略，不适用"
+      },
+      "message": "单标的策略 (SPY)"
+    },
+    {
+      "gate_id": 6,
+      "gate_name": "Event Contribution",
+      "status": "PASS",
+      "details": {
+        "n_trades": 1,
+        "total_return": 1.5683,
+        "note": "仅 1 笔交易，样本不足，无法验证事件贡献"
+      },
+      "message": "仅 1 笔交易，样本不足，跳过事件分析"
+    },
+    {
+      "gate_id": 7,
+      "gate_name": "Stability",
+      "status": "PASS",
+      "details": {
+        "window_years": 3.0,
+        "n_windows": 24,
+        "mean_sharpe": 0.3917,
+        "std_sharpe": 0.1836,
+        "min_sharpe": -0.0394,
+        "max_sharpe": 0.6988,
+        "pct_positive": 95.8,
+        "median_sharpe": 0.4204
+      },
+      "message": "稳定性良好，96% 窗口为正，CV=0.47"
+    },
+    {
+      "gate_id": 8,
+      "gate_name": "Benchmark Comparison",
+      "status": "FAIL",
+      "details": {
+        "comparisons": {
+          "SPY": {
+            "strat_sharpe": 0.3575,
+            "bench_sharpe": 0.8829,
+            "excess_sharpe": -0.5254,
+            "strat_cagr": 0.0492,
+            "bench_cagr": 0.1527,
+            "excess_cagr": -0.1035,
+            "strat_maxdd": -0.2641,
+            "bench_maxdd": -0.3372
+          },
+          "QQQ": {
+            "strat_sharpe": 0.3575,
+            "bench_sharpe": 0.9823,
+            "excess_sharpe": -0.6248,
+            "strat_cagr": 0.0492,
+            "bench_cagr": 0.2154,
+            "excess_cagr": -0.1662,
+            "strat_maxdd": -0.2641,
+            "bench_maxdd": -0.3512
+          },
+          "XLK": {
+            "strat_sharpe": 0.3575,
+            "bench_sharpe": 1.024,
+            "excess_sharpe": -0.6665,
+            "strat_cagr": 0.0492,
+            "bench_cagr": 0.2496,
+            "excess_cagr": -0.2004,
+            "strat_maxdd": -0.2641,
+            "bench_maxdd": -0.3356
+          }
+        },
+        "benchmarks_beaten": 0
+      },
+      "message": "未打败任何基准 (SPY, QQQ, XLK)"
+    },
+    {
+      "gate_id": 9,
+      "gate_name": "Risk Diagnostics",
+      "status": "PASS",
+      "details": {
+        "ann_volatility": 0.1795,
+        "max_drawdown": -0.2641,
+        "var_5pct": -0.016686,
+        "tail_risk_avg": -0.02644,
+        "exposure": 0.9924,
+        "beta": -0.2639,
+        "correlation": -0.2636
+      },
+      "message": "风险可控: Vol=17.9%, MaxDD=-26.4%, VaR=-1.67%"
+    }
+  ],
+  "backtest_stats": {
+    "sharpe": 0.3575,
+    "cagr": 0.0492,
+    "maxdd": -0.2641,
+    "sortino": 0.4507,
+    "ann_vol": 0.1795,
+    "win_rate": 0.5283,
+    "turnover": 92.5,
+    "n_years": 9.97,
+    "total_return": 0.6141,
+    "cost_bps": 0.0
+  }
+}

@@ -1,0 +1,124 @@
+/* ===== QuantDesk Mobile Responsive Override ===== */
+
+/* -- Mobile sidebar toggle button (hidden on desktop) -- */
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1000;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--teal, #14b8a6);
+  color: #000;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* -- Overlay backdrop when sidebar is open on mobile -- */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 998;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(2px);
+}
+
+/* ===== Mobile: < 768px ===== */
+@media (max-width: 767px) {
+  /* Show hamburger button */
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  /* Sidebar: hidden by default, slide in from left */
+  #root > .min-h-screen > aside,
+  #root > .min-h-screen > .shrink-0 {
+    position: fixed !important;
+    top: 0;
+    left: -260px;
+    z-index: 999;
+    height: 100vh;
+    width: 240px !important;
+    transition: left 0.25s ease;
+    overflow-y: auto;
+  }
+
+  /* Sidebar open state */
+  #root > .min-h-screen > aside.sidebar-open,
+  #root > .min-h-screen > .shrink-0.sidebar-open {
+    left: 0 !important;
+  }
+
+  /* Show overlay when sidebar is open */
+  .sidebar-overlay.active {
+    display: block;
+  }
+
+  /* Main content: full width, add top padding for hamburger */
+  #root > .min-h-screen > main,
+  #root > .min-h-screen > .flex-1 {
+    padding-top: 56px !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Grid cards: force 2 columns on small screens */
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Stats top row: 2 cols instead of 5 */
+  .grid[class*="xl\\:grid-cols-5"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Charts area: single column */
+  .grid[class*="xl\\:grid-cols-3"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tables: horizontal scroll */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Tighter padding on cards */
+  .card {
+    padding: 12px !important;
+  }
+
+  /* h1 heading smaller */
+  h1 {
+    font-size: 1.25rem !important;
+  }
+
+  /* Chart containers */
+  .recharts-responsive-container {
+    min-height: 200px;
+  }
+}
+
+/* ===== Tablet: 768px - 1023px ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Narrower sidebar */
+  #root > .min-h-screen > aside,
+  #root > .min-h-screen > .shrink-0 {
+    width: 180px !important;
+    font-size: 13px;
+  }
+
+  /* 3-column stats */
+  .grid[class*="xl\\:grid-cols-5"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}

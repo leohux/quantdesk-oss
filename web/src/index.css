@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #070a0f;
+  --panel: #0e141c;
+  --panel-2: #121a24;
+  --border: #1e2a38;
+  --text: #e8eef6;
+  --muted: #8b9bb0;
+  --teal: #2dd4bf;
+  --green: #34d399;
+  --red: #f87171;
+  --amber: #fbbf24;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* Visible scroll rail for dense panels (PnL list, etc.) */
+.pnl-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #3a4d63 #121a24;
+}
+.pnl-scroll::-webkit-scrollbar {
+  width: 8px;
+}
+.pnl-scroll::-webkit-scrollbar-track {
+  background: #121a24;
+  border-radius: 4px;
+}
+.pnl-scroll::-webkit-scrollbar-thumb {
+  background: #3a4d63;
+  border-radius: 4px;
+}
+.pnl-scroll::-webkit-scrollbar-thumb:hover {
+  background: #5a7088;
+}
+
+body {
+  font-family: "IBM Plex Sans", "Inter", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  background-image: radial-gradient(
+    circle at 50% 0%,
+    rgba(45, 212, 191, 0.03) 0%,
+    transparent 50%
+  );
+  min-height: 100vh;
+}
+
+.mono {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+}
+
+.card {
+  background: linear-gradient(135deg, var(--panel) 0%, var(--panel-2) 100%);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.pos { color: var(--green); }
+.neg { color: var(--red); }
+
+/* Recharts default tooltip inherits series fill; force readable text on dark UI */
+.recharts-default-tooltip {
+  background: #0e141c !important;
+  border: 1px solid #1e2a38 !important;
+  border-radius: 8px !important;
+}
+.recharts-default-tooltip,
+.recharts-default-tooltip * {
+  color: #e8eef6 !important;
+}
+.recharts-tooltip-label {
+  color: #e8eef6 !important;
+}
+.recharts-tooltip-item,
+.recharts-tooltip-item-name,
+.recharts-tooltip-item-separator,
+.recharts-tooltip-item-value {
+  color: #e8eef6 !important;
+}
+
+/* Toast slide-in animation */
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
+}
+
+/* Pulse glow for live indicators */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Fade-in for content */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out;
+}
+
+/* Number ticker effect */
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-count {
+  animation: count-up 0.2s ease-out;
+}
+
+/* Mobile sidebar toggle.
+   NOTE: These rules are unlayered and override Tailwind translate utilities.
+   AppShell must toggle `.sidebar-open` on the root when the hamburger opens. */
+/* Match Tailwind max-md (< 768px); 768px exactly keeps desktop sidebar. */
+@media (max-width: 767px) {
+  aside {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 40;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    will-change: transform;
+  }
+  .sidebar-open aside {
+    transform: translateX(0);
+  }
+  .sidebar-open {
+    overflow: hidden;
+  }
+}

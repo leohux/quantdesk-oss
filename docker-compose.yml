@@ -1,0 +1,288 @@
+services:
+  quantdesk:
+    build: .
+    container_name: quantdesk
+    restart: unless-stopped
+    cpus: 40.0
+    stop_grace_period: 30s
+    ports:
+      - "18080:8000"
+    env_file:
+      - .env
+    environment:
+      QUANT_CPU_WORKERS: "32"
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      COMBINED_POSITION_CAP_PCT: "10"
+      MAX_GROSS_EXPOSURE_PCT: "150"
+      PORTFOLIO_GROSS: "1.5"
+      MIN_CASH_PCT: "-50"
+      # paper only; "live" is reserved in execution/broker_factory.py and refused
+      ALPACA_TRADING_MODE: "paper"
+    volumes:
+      - ./data/store:/app/data/store
+      - ./data/cache:/app/data/cache
+      - ./data/loader.py:/app/data/loader.py
+      - ./api:/app/api
+      - ./config:/app/config
+      - ./core:/app/core
+      - ./scripts:/app/scripts
+      - ./backtest:/app/backtest
+      - ./execution:/app/execution
+      - ./web/dist:/app/web/dist
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      disable: true
+    networks:
+      - quantdesk-net
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: quantdesk-postgres
+    restart: unless-stopped
+    stop_grace_period: 30s
+    # Don't expose port externally (container-to-container only)
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: quantdesk
+      POSTGRES_PASSWORD: quantdesk
+      POSTGRES_DB: quantdesk
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U quantdesk"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    networks:
+      - quantdesk-net
+
+  redis:
+    image: redis:7-alpine
+    container_name: quantdesk-redis
+    restart: unless-stopped
+    stop_grace_period: 30s
+    # Don't expose port externally (container-to-container only)
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - quantdesk-net
+
+  alpha-miner:
+    image: us-quant-quantdesk
+    container_name: quantdesk-alpha-miner
+    restart: "no"
+    profiles:
+      - mine
+    cpus: 32.0
+    mem_limit: 28g
+    env_file:
+      - .env
+    environment:
+      ALPHA_MINER_API: http://quantdesk:8000
+      ALPHA_MINER_STORE: /app/data/store/alpha_miner
+      PYTHONPATH: /app
+      ALPHA_MINER_WORKERS: "24"
+      ALPHA_MINER_A_COUNT: "48"
+      ALPHA_MINER_B_COUNT: "6"
+      ALPHA_MINER_INTERVAL_SEC: "0"
+      ALPHA_MINER_PREFETCH: "2"
+      ALPHA_MINER_POST_WORKERS: "8"
+      ALPHA_MINER_QUICK_REVIEW: "0"
+      ALPHA_MINER_START: "2021-01-01"
+      ALPHA_GATE_MIN_SHARPE: "0.80"
+      ALPHA_GATE_MIN_TRADES: "15"
+      ALPHA_GATE_MIN_RETURN: "0.20"
+      ALPHA_GATE_MAX_DD: "0.30"
+      OPENBLAS_NUM_THREADS: "1"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+    command: ["python", "-m", "alpha_miner"]
+    volumes:
+      - ./alpha_miner:/app/alpha_miner
+      - ./research_reviewer:/app/research_reviewer
+      - ./backtest:/app/backtest
+      - ./data/loader.py:/app/data/loader.py
+      - ./data/store:/app/data/store
+      - ./data/cache:/app/data/cache
+    depends_on:
+      - quantdesk
+    networks:
+      - quantdesk-net
+
+
+  news-trader:
+    image: us-quant-quantdesk
+    container_name: quantdesk-news-trader
+    restart: unless-stopped
+    cpus: 2.0
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: /app
+      NEWS_TRADER_STORE: /app/data/store/news_trader
+      # INTERVAL = max sleep; WS/SEC wake scoring immediately on new news
+      NEWS_TRADER_INTERVAL_SEC: "15"
+      NEWS_TRADER_OFF_HOURS_SEC: "45"
+      NEWS_TRADER_SCORE_WHEN_CLOSED: "1"
+      NEWS_TRADER_MAX_ENTRY_VS_NEWS_PCT: "2.0"
+      NEWS_TRADER_MAX_NEWS_AGE_SEC: "14400"
+      NEWS_TRADER_PREOPEN_POLL_SEC: "10"
+      # Earnings: higher bar + max 1 open; non-earnings get score/flush priority
+      NEWS_TRADER_EARNINGS_MIN_CONF: "0.78"
+      NEWS_TRADER_EARNINGS_MAX_OPEN: "1"
+      NEWS_TRADER_EARNINGS_QUEUE_CLOSED: "0"
+      NEWS_TRADER_PREMARKET_LIMITS: "1"
+      # Join/above last toward chase ceiling; bump in final 45m; reprice up if last lifts
+      NEWS_TRADER_PREMARKET_LIMIT_AGGRESS_BPS: "25"
+      NEWS_TRADER_PREMARKET_LIMIT_SHAVE_BPS: "0"
+      NEWS_TRADER_PREMARKET_NEAR_OPEN_MIN: "45"
+      NEWS_TRADER_PREMARKET_NEAR_OPEN_AGGRESS_BPS: "80"
+      NEWS_TRADER_PREMARKET_REPRICE_BPS: "15"
+      NEWS_TRADER_PREMARKET_REPRICE_MIN_SEC: "90"
+      NEWS_TRADER_NEWS_WS: "1"
+      NEWS_TRADER_SEC_EDGAR: "1"
+      NEWS_TRADER_SEC_POLL_SEC: "15"
+      SEC_USER_AGENT: "QuantDesk NewsTrader quantdesk@example.com"
+      NEWS_TRADER_DRY_RUN: "0"
+      NEWS_TRADER_MAX_POSITIONS: "8"
+      NEWS_TRADER_PCT_EQUITY: "0.03"
+      NEWS_TRADER_MAX_NOTIONAL: "4000"
+      NEWS_TRADER_MAX_BUYS: "3"
+      COMBINED_POSITION_CAP_PCT: "10"
+      MAX_GROSS_EXPOSURE_PCT: "150"
+      MIN_CASH_PCT: "-50"
+      ALPACA_TRADING_MODE: "paper"
+      # News scorer — Flash default; Pro for SEC high-signal + Flash edge conf
+      NEWS_TRADER_MODEL: ${NEWS_TRADER_MODEL:-deepseek-ai/DeepSeek-V4-Flash}
+      NEWS_TRADER_PRO_MODEL: ${NEWS_TRADER_PRO_MODEL:-deepseek-ai/DeepSeek-V4-Pro}
+      NEWS_TRADER_ESCALATE_PRO: "1"
+      NEWS_TRADER_EDGE_CONF_LO: "0.65"
+      NEWS_TRADER_EDGE_CONF_HI: "0.75"
+      NEWS_TRADER_SCORE_WORKERS: "4"
+      NEWS_TRADER_PRO_WORKERS: "2"
+      NEWS_TRADER_SCORE_TIMEOUT_SEC: "30"
+      NEWS_TRADER_PRO_TIMEOUT_SEC: "60"
+      DEEPSEEK_BASE_URL: ${DEEPSEEK_BASE_URL:-https://api.siliconflow.cn/v1}
+    command: ["python", "-m", "news_trader"]
+    volumes:
+      - ./news_trader:/app/news_trader
+      - ./core:/app/core
+      - ./execution:/app/execution
+      - ./config:/app/config
+      - ./data/store:/app/data/store
+      - ./data/cache:/app/data/cache
+    depends_on:
+      quantdesk:
+        condition: service_started
+    healthcheck:
+      disable: true
+    networks:
+      - quantdesk-net
+
+  research-reviewer:
+    image: us-quant-quantdesk
+    container_name: quantdesk-research-reviewer
+    restart: "no"
+    profiles:
+      - research
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: /app
+      RESEARCH_REVIEW_STORE: /app/data/store/research_reviews
+      STRATEGIES_FILE: /app/data/store/strategies.json
+      RESEARCH_REVIEW_STAT: "1"
+      RESEARCH_REVIEW_LLM: "0"
+    command: ["python", "-m", "research_reviewer", "--limit", "200", "--skip-reviewed"]
+    volumes:
+      - ./research_reviewer:/app/research_reviewer
+      - ./data/store:/app/data/store
+      - ./data/cache:/app/data/cache
+    depends_on:
+      quantdesk:
+        condition: service_started
+    networks:
+      - quantdesk-net
+
+  ibkr-gateway:
+    image: ghcr.io/gnzsnz/ib-gateway:stable
+    container_name: quantdesk-ibkr-gateway
+    restart: unless-stopped
+    profiles:
+      - ibkr
+    env_file:
+      - .env
+    environment:
+      TWS_USERID: ${IBKR_USERNAME:-}
+      TWS_PASSWORD: ${IBKR_PASSWORD:-}
+      TRADING_MODE: ${IBKR_GATEWAY_MODE:-paper}
+      READ_ONLY_API: ${IBKR_READ_ONLY:-yes}
+      VNC_SERVER_PASSWORD: ${IBKR_VNC_PASSWORD:-quantdesk-vnc}
+      AUTO_RESTART_TIME: ${IBKR_AUTO_RESTART_TIME:-}
+      TIME_ZONE: ${TZ:-America/New_York}
+    volumes:
+      - ./data/ibkr:/home/ibgateway/Jts
+    healthcheck:
+      test: ["CMD-SHELL", "bash -lc 'exec 3<>/dev/tcp/127.0.0.1/4002'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 120s
+    networks:
+      - quantdesk-net
+
+
+  intraday-runner:
+    image: us-quant-quantdesk
+    container_name: quantdesk-intraday
+    restart: unless-stopped
+    stop_grace_period: 20s
+    cpus: 2.0
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: /app
+      INTRADAY_POLL_SEC: "90"
+      INTRADAY_STRATEGY_ID: strategy-046bfa
+      COMBINED_POSITION_CAP_PCT: "10"
+      MAX_GROSS_EXPOSURE_PCT: "150"
+      MIN_CASH_PCT: "-50"
+      ALPACA_TRADING_MODE: "paper"
+    command: ["python", "/app/scripts/intraday_runner.py", "--loop", "--execute"]
+    volumes:
+      - ./scripts:/app/scripts
+      - ./core:/app/core
+      - ./execution:/app/execution
+      - ./config:/app/config
+      - ./data/loader.py:/app/data/loader.py
+      - ./data/store:/app/data/store
+      - ./data/cache:/app/data/cache
+    depends_on:
+      - quantdesk
+    healthcheck:
+      disable: true
+    networks:
+      - quantdesk-net
+
+
+volumes:
+  postgres-data:
+  redis-data:
+
+networks:
+  quantdesk-net:
+    driver: bridge

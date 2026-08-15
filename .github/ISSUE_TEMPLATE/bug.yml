@@ -1,0 +1,53 @@
+name: Bug report
+description: Report a reproducible problem
+title: "[Bug]: "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve QuantDesk. Do not include credentials, tokens, account IDs, or live order data.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the observed behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Configure ...\n2. Run ...\n3. Observe ..."
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version / commit
+      placeholder: v0.1.0 or commit SHA
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Trading mode
+      options:
+        - Backtest
+        - Mock / Shadow
+        - Alpaca Paper
+        - IBKR Paper (read-only)
+        - Live locked (no submission)
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      description: Redact all secrets and personal account data.
+      render: shell
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety checks
+      options:
+        - label: I removed credentials, tokens, account IDs, and private trading data.
+          required: true
