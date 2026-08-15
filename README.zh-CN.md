@@ -150,12 +150,19 @@ flowchart LR
 
 ## 快速开始
 
+### 别人下载后能直接用吗？
+
+- **有前端：** React 控制台在 `web/`，Docker 构建时会打包进镜像，由 API 一起提供（打开 http://127.0.0.1:18080 就是带 UI 的）
+- **不能免配置即用：** 必须先 `cp .env.example .env`，设置 `ADMIN_PASSWORD`；要模拟盘再填 Alpaca Key
+- **推荐路径：** Release zip / git clone → 配 `.env` → `docker compose up -d --build`
+
 ### 1）克隆并配置
 
 ```bash
 git clone https://github.com/leohux/quantdesk-oss.git
 cd quantdesk-oss
 cp .env.example .env
+# 必填：ADMIN_PASSWORD=...（无弱默认口令）
 # 想跑模拟盘就填 ALPACA_*；实盘锁保持原样别动
 ```
 
