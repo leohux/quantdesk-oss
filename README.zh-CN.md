@@ -1,4 +1,4 @@
-﻿# QuantDesk
+# QuantDesk
 
 <p align="center">
   <a href="README.md">English</a> · <strong>简体中文</strong>
@@ -26,7 +26,11 @@
 
 ---
 
-> **公开去敏版（`quantdesk-oss`）。** 不含密钥、实盘 journal、私有研究产物与运维手册。请先复制 `.env.example` → `.env` 并自行设置强密码与 API Key。
+> **公开去敏版（`quantdesk-oss`）。** 不含密钥、实盘 journal、私有研究产物。请复制 `.env.example` → `.env`，设置强密码 `ADMIN_PASSWORD` 后再启动。
+
+**获取方式**
+1. **克隆：** `git clone https://github.com/leohux/quantdesk-oss.git`
+2. **下载安装包：** 右侧 **Releases** → [最新 Release](https://github.com/leohux/quantdesk-oss/releases/latest) 的 Source code (zip / tar.gz)
 
 **QuantDesk** 是一个**个人可落地的最小实现**开源美股量化台——一人就能跑通研究→模拟→实盘链路，不需要对冲基金级基建。它不只会回测，还会在动真钱之前**硬淘汰假 alpha**：
 
@@ -151,7 +155,7 @@ flowchart LR
 
 ```bash
 git clone https://github.com/leohux/quantdesk-oss.git
-cd quantdesk
+cd quantdesk-oss
 cp .env.example .env
 # 想跑模拟盘就填 ALPACA_*；实盘锁保持原样别动
 ```
