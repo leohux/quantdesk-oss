@@ -30,7 +30,8 @@ services:
       - ./scripts:/app/scripts
       - ./backtest:/app/backtest
       - ./execution:/app/execution
-      - ./web/dist:/app/web/dist
+      # web UI is baked into the image (Dockerfile web-build). Do NOT bind-mount
+      # ./web/dist here — a fresh clone has no dist/ and would blank the UI.
     depends_on:
       postgres:
         condition: service_healthy

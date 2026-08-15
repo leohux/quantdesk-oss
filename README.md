@@ -160,6 +160,12 @@ cp .env.example .env
 # fill ALPACA_* if you want paper trading; leave live locks as-is
 ```
 
+### What you get out of the box
+
+- **Backend:** FastAPI (pi/)
+- **Frontend:** React + Vite dashboard (web/) — built inside Docker and served by the API
+- **Not zero-config:** you must create .env and set ADMIN_PASSWORD (and Alpaca keys for paper trading)
+
 ### 2) Run with Docker (recommended)
 
 ```bash
