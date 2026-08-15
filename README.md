@@ -11,8 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/leohux/quantdesk-oss/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/leohux/quantdesk-oss/actions/workflows/ci.yml/badge.svg?branch=main" /></a>
-  <a href="https://github.com/leohux/quantdesk-oss/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/leohux/quantdesk-oss?display_name=tag&sort=semver" /></a>
+<a href="https://github.com/leohux/quantdesk-oss/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/leohux/quantdesk-oss?display_name=tag&sort=semver" /></a>
   <a href="https://github.com/leohux/quantdesk-oss/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/leohux/quantdesk-oss?style=flat" /></a>
 </p>
 
@@ -25,6 +24,12 @@
 </p>
 
 ---
+
+> **Public OSS snapshot (`quantdesk-oss`).** Sanitized open-source edition — no live credentials, journals, or private research dumps. Copy `.env.example` → `.env`, set a strong `ADMIN_PASSWORD`, then run.
+
+**Get the code**
+1. **Clone:** `git clone https://github.com/leohux/quantdesk-oss.git`
+2. **Download package:** [latest Release](https://github.com/leohux/quantdesk-oss/releases/latest) → Source code (zip / tar.gz) on the right sidebar
 
 **QuantDesk** is a **minimal, solo-operator** open-source quant desk for US equities — small enough for one person to run end-to-end, without hedge-fund infrastructure. It does not just backtest; it tries to **kill fake alpha** before money is at risk:
 
@@ -149,9 +154,10 @@ Deep dive: [`docs/Architecture.md`](docs/Architecture.md) · [`docs/EventFlow.md
 
 ```bash
 git clone https://github.com/leohux/quantdesk-oss.git
-cd quantdesk
+cd quantdesk-oss
 cp .env.example .env
-# REQUIRED: set ADMIN_PASSWORD=... (no insecure default)\n# fill ALPACA_* if you want paper trading; leave live locks as-is
+# REQUIRED: set ADMIN_PASSWORD=... (no insecure default)
+# fill ALPACA_* if you want paper trading; leave live locks as-is
 ```
 
 ### 2) Run with Docker (recommended)
@@ -251,7 +257,7 @@ pip install -r requirements.txt
 pytest tests/ -q
 ```
 
-CI runs on every push / PR (see `.github/workflows/ci.yml`).
+Run locally with `pytest`.
 
 ---
 

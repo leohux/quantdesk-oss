@@ -11,8 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/leohux/quantdesk-oss/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/leohux/quantdesk-oss/actions/workflows/ci.yml/badge.svg?branch=main" /></a>
-  <a href="https://github.com/leohux/quantdesk-oss/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/leohux/quantdesk-oss?display_name=tag&sort=semver" /></a>
+<a href="https://github.com/leohux/quantdesk-oss/releases/latest"><img alt="Release" src="https://img.shields.io/github/v/release/leohux/quantdesk-oss?display_name=tag&sort=semver" /></a>
   <a href="https://github.com/leohux/quantdesk-oss/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/leohux/quantdesk-oss?style=flat" /></a>
 </p>
 
@@ -26,10 +25,10 @@
 
 ---
 
-> **公开去敏版（quantdesk-oss）。** 不含密钥、实盘 journal、私有研究产物。请复制 .env.example → .env，设置强密码 ADMIN_PASSWORD 后再启动。
+> **公开去敏版（`quantdesk-oss`）。** 不含密钥、实盘 journal、私有研究产物。请复制 `.env.example` → `.env`，设置强密码 `ADMIN_PASSWORD` 后再启动。
 
 **获取方式**
-1. **克隆：** git clone https://github.com/leohux/quantdesk-oss.git
+1. **克隆：** `git clone https://github.com/leohux/quantdesk-oss.git`
 2. **下载安装包：** 右侧 **Releases** → [最新 Release](https://github.com/leohux/quantdesk-oss/releases/latest) 的 Source code (zip / tar.gz)
 
 **QuantDesk** 是一个**个人可落地的最小实现**开源美股量化台——一人就能跑通研究→模拟→实盘链路，不需要对冲基金级基建。它不只会回测，还会在动真钱之前**硬淘汰假 alpha**：
