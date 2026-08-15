@@ -153,8 +153,9 @@ flowchart LR
 ### 别人下载后能直接用吗？
 
 - **有前端：** React 控制台在 `web/`，Docker 构建时会打包进镜像，由 API 一起提供（打开 http://127.0.0.1:18080 就是带 UI 的）
-- **不能免配置即用：** 必须先 `cp .env.example .env`，设置 `ADMIN_PASSWORD`；要模拟盘再填 Alpaca Key
+- **需要最少配置：** `cp .env.example .env`（默认登录密码 `changeme1`，请改掉）；要模拟盘再填 Alpaca Key
 - **推荐路径：** Release zip / git clone → 配 `.env` → `docker compose up -d --build`
+- **默认只起核心服务**（API+前端+Postgres+Redis）。新闻交易 / miner / 盘中 runner / IBKR 都在 profile 后面
 
 ### 1）克隆并配置
 
@@ -162,7 +163,7 @@ flowchart LR
 git clone https://github.com/leohux/quantdesk-oss.git
 cd quantdesk-oss
 cp .env.example .env
-# 必填：ADMIN_PASSWORD=...（无弱默认口令）
+# 默认 ADMIN_PASSWORD=changeme1 —— 对公网暴露前请改掉
 # 想跑模拟盘就填 ALPACA_*；实盘锁保持原样别动
 ```
 
@@ -170,14 +171,16 @@ cp .env.example .env
 
 ```bash
 docker compose up -d --build
-# API:  http://127.0.0.1:18080
-# 文档: http://127.0.0.1:18080/docs
+# UI + API: http://127.0.0.1:18080
+# 文档:     http://127.0.0.1:18080/docs
 ```
 
-IB Gateway 在 Compose 的 **profile** 后面，**默认不启动**：
+可选 sidecar：
 
 ```bash
-# 仅当你确实有 IBKR 凭据、且想跑 paper gateway 时
+docker compose --profile news up -d
+docker compose --profile mine up -d
+docker compose --profile intraday up -d
 docker compose --profile ibkr up -d
 ```
 
