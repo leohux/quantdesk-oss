@@ -26,10 +26,10 @@
 
 ---
 
-> **Public OSS snapshot (`quantdesk-oss`).** Sanitized open-source edition — no live credentials, journals, or private research dumps. Copy `.env.example` → `.env`, set a strong `ADMIN_PASSWORD`, then run.
+> **Public OSS snapshot (quantdesk-oss).** Sanitized open-source edition — no live credentials, journals, or private research dumps. Copy .env.example → .env, set a strong ADMIN_PASSWORD, then run.
 
 **Get the code**
-1. **Clone:** `git clone https://github.com/leohux/quantdesk-oss.git`
+1. **Clone:** git clone https://github.com/leohux/quantdesk-oss.git
 2. **Download package:** [latest Release](https://github.com/leohux/quantdesk-oss/releases/latest) → Source code (zip / tar.gz) on the right sidebar
 
 **QuantDesk** is a **minimal, solo-operator** open-source quant desk for US equities — small enough for one person to run end-to-end, without hedge-fund infrastructure. It does not just backtest; it tries to **kill fake alpha** before money is at risk:
@@ -258,7 +258,7 @@ pip install -r requirements.txt
 pytest tests/ -q
 ```
 
-Run locally with `pytest` (add CI when publishing with a token that has `workflow` scope).
+CI runs on every push / PR (see `.github/workflows/ci.yml`).
 
 ---
 
