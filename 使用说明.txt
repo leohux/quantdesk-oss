@@ -1,0 +1,23 @@
+QuantDesk — 解压后怎么打开
+========================
+
+推荐（最简单，Windows）：
+  1. 安装并打开 Docker Desktop，等到左下角图标变绿
+     https://www.docker.com/products/docker-desktop/
+  2. 双击  打开QuantDesk.bat  （或 start.bat）
+  3. 等首次下载镜像（几分钟），浏览器会打开
+     http://127.0.0.1:18080
+  4. 登录密码见 .env 里的 ADMIN_PASSWORD（默认占位是 changeme1，请改掉）
+
+关闭：
+  双击  关闭QuantDesk.bat  （或 stop.bat）
+
+说明：
+  - 第一次启动会自动把 .env.example 复制成 .env（不要把 .env 提交到 GitHub）
+  - 想用 Alpaca 模拟盘，再用记事本编辑 .env，填写你自己的 ALPACA_API_KEY / ALPACA_SECRET_KEY
+  - 不要改 LIVE_TRADING_ENABLED，实盘默认锁定
+  - 没有 Docker 时，脚本会尝试用本机 Python 启动（需已安装 Python 3.11+，可选 Node.js）
+
+Mac / Linux：
+  chmod +x start.sh
+  ./start.sh

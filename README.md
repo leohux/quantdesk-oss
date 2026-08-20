@@ -150,6 +150,15 @@ Deep dive: [`docs/Architecture.md`](docs/Architecture.md) · [`docs/EventFlow.md
 
 ## Quick Start
 
+### Double-click after unzip (Windows)
+
+1. Install and start [Docker Desktop](https://www.docker.com/products/docker-desktop/) (wait until it is green)
+2. Double-click **`打开QuantDesk.bat`** (or `start.bat`)
+3. First launch builds images; the browser opens http://127.0.0.1:18080
+4. Stop with **`关闭QuantDesk.bat`** / `stop.bat`
+
+Short Chinese guide: `使用说明.txt`. The launcher copies `.env.example` → `.env` if missing (default `ADMIN_PASSWORD=changeme1` — change it). Without Docker, it falls back to local Python.
+
 ### 1) Clone & configure
 
 ```bash
@@ -241,6 +250,9 @@ quantdesk/
 ├── docs/                # Architecture, API, Paper, Live, Deploy
 ├── deploy/              # Nginx sample + deploy/backup scripts
 ├── tests/               # Safety & lock tests
+├── 打开QuantDesk.bat / start.bat   # double-click to start
+├── 关闭QuantDesk.bat / stop.bat    # double-click to stop
+├── 使用说明.txt
 ├── docker-compose.yml
 └── .env.example
 ```

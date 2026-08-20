@@ -10,6 +10,12 @@ All notable changes to QuantDesk will be documented here. The format follows [Ke
 - Product screenshot gallery.
 - Contributor Covenant.
 
+## [0.1.2] - 2026-08-20
+
+### Added
+
+- One-click Windows launchers (`打开QuantDesk.bat` / `关闭QuantDesk.bat`) and `start.sh` so unzipped users can start Docker without typing commands.
+
 ## [0.1.0] - 2026-07-29
 
 ### Added
@@ -20,5 +26,6 @@ All notable changes to QuantDesk will be documented here. The format follows [Ke
 - FastAPI backend and React dashboard.
 - Docker Compose deployment, bilingual documentation, CI, and security guidance.
 
-[Unreleased]: https://github.com/leohux/quantdesk-oss/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/leohux/quantdesk-oss/compare/v0.1.2...HEAD
+[0.1.2]: https://github.com/leohux/quantdesk-oss/releases/tag/v0.1.2
 [0.1.0]: https://github.com/leohux/quantdesk-oss/releases/tag/v0.1.0

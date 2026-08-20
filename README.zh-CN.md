@@ -150,11 +150,20 @@ flowchart LR
 
 ## 快速开始
 
+### 解压后双击打开（Windows）
+
+1. 安装并打开 [Docker Desktop](https://www.docker.com/products/docker-desktop/)，等到图标变绿
+2. 双击 **`打开QuantDesk.bat`**（或 `start.bat`）
+3. 首次会下载镜像，完成后浏览器自动打开 http://127.0.0.1:18080
+4. 关闭时双击 **`关闭QuantDesk.bat`**
+
+更短的说明见根目录 `使用说明.txt`。脚本会在缺少 `.env` 时自动从 `.env.example` 复制（默认密码 `changeme1`，请改掉）。
+
 ### 别人下载后能直接用吗？
 
 - **有前端：** React 控制台在 `web/`，Docker 构建时会打包进镜像，由 API 一起提供（打开 http://127.0.0.1:18080 就是带 UI 的）
-- **需要最少配置：** `cp .env.example .env`（默认登录密码 `changeme1`，请改掉）；要模拟盘再填 Alpaca Key
-- **推荐路径：** Release zip / git clone → 配 `.env` → `docker compose up -d --build`
+- **需要最少配置：** 双击 `打开QuantDesk.bat`，或手动 `cp .env.example .env`（默认登录密码 `changeme1`，请改掉）；要模拟盘再填 Alpaca Key
+- **推荐路径：** Release zip / git clone → 双击启动（或 `docker compose up -d --build`）
 - **默认只起核心服务**（API+前端+Postgres+Redis）。新闻交易 / miner / 盘中 runner / IBKR 都在 profile 后面
 
 ### 1）克隆并配置
@@ -240,6 +249,9 @@ quantdesk/
 ├── docs/                # 架构、API、模拟盘、实盘、部署
 ├── deploy/              # Nginx 示例 + 部署/备份脚本
 ├── tests/               # 安全与锁定测试
+├── 打开QuantDesk.bat / start.bat   # 双击启动
+├── 关闭QuantDesk.bat / stop.bat    # 双击关闭
+├── 使用说明.txt
 ├── docker-compose.yml
 └── .env.example
 ```
